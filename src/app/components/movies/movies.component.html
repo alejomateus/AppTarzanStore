@@ -1,0 +1,130 @@
+<div class="row" >
+  <div class="col-lg-12 col-sm-12"  *ngIf="auth.isAdmin()" >
+    <label for="">Formulario de edicion y creacion de peliculas</label>
+    <form [formGroup]="forma" (ngSubmit)="actionmovie()">
+      <div class="form-group row">
+        <label class="col-2 col-form-label">Titulo</label>
+        <div class="col-md-8">
+          <input class="form-control" type="text" placeholder="titulo" formControlName="title">
+          <div *ngIf="forma.get('title').errors?.required && forma.get('title').dirty" class="form-control-feedback">
+            El titulo es requerido.
+          </div>
+        </div>
+      </div>  
+      <div class="form-group row">
+        <label class="col-2 col-form-label">Descripcion</label>
+        <div class="col-md-8">
+          <input class="form-control" type="text" placeholder="Descripcion" formControlName="description">
+          <div *ngIf="forma.get('description').errors?.required && forma.get('description').dirty" class="form-control-feedback">
+            El correo es requerido.
+          </div>
+        </div>
+      </div>  
+      <div class="form-group row">
+        <label class="col-2 col-form-label">Lista</label>
+        <div class="col-md-8">
+          <input class="form-control" type="text" placeholder="Lista" formControlName="list">
+          <div *ngIf="forma.get('list').errors?.required && forma.get('list').dirty" class="form-control-feedback">
+            El campo Lista es requerido.
+          </div>
+        </div>
+      </div>  
+      <div class="form-group row">
+        <label class="col-2 col-form-label">Director</label>
+        <div class="col-md-8">
+          <input class="form-control" type="text" placeholder="Director" formControlName="director">
+          <div *ngIf="forma.get('director').errors?.required && forma.get('director').dirty " class="form-control-feedback">
+            El nombre del director es requerido.
+          </div>
+        </div>
+      </div>  
+      <div class="form-group row">
+        <label class="col-2 col-form-label">Costo</label>
+        <div class="col-md-8">
+          <input class="form-control" type="text" placeholder="Costo" formControlName="cost">
+          <div *ngIf="forma.get('cost').errors?.required && forma.get('cost').dirty" class="form-control-feedback">
+            El Costo es requerido.
+          </div>
+        </div>
+      </div>  
+      <div class="form-group row">
+        <label class="col-2 col-form-label">Cantidad</label>
+        <div class="col-md-8">
+          <input class="form-control" type="number" placeholder="Cantidad" formControlName="quantity">
+          <div *ngIf="forma.get('quantity').errors?.required && forma.get('quantity').dirty" class="form-control-feedback">
+            El campo Cantidad es requerido.
+          </div>
+        </div>
+      </div>  
+      <div class="form-group row">
+        <label class="col-2 col-form-label">&nbsp;</label>
+        <div class="input-group col-md-8">
+          <button type="submit" class="btn btn-outline-primary" [disabled]="!forma.valid">
+            Guardar
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class=" col-lg-12 col-sm-12">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Titulo</th>
+          <th scope="col">Descripcion</th>
+          <th scope="col">Lista</th>
+          <th scope="col">Director</th>
+          <th scope="col">Costo</th>
+          <th scope="col">Cantidad</th>
+          <th scope="col"  *ngIf="auth.isAdmin()">Editar</th>
+          <th scope="col"  *ngIf="auth.isAdmin()">Cancelar</th>
+          <th scope="col"  *ngIf="!auth.isAdmin()">Reservar</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr  *ngFor="let movie of movies">
+          <th scope="row">{{movie.id}}</th>
+          <td>{{movie.title}}</td>
+          <td>{{movie.description}}</td>
+          <td>{{movie.list}}</td>
+          <td>{{movie.director}}</td>
+          <td>{{movie.cost}}</td>
+          <td>{{movie.quantity}}</td>
+          <td  *ngIf="auth.isAdmin()">
+              <button
+              type="button"
+              *ngIf="auth.isAdmin()"
+              (click)="cargardata(movie.id)"
+              class="btn btn-large btn-outline-primary"
+            >
+              Editar
+            </button>
+          </td>
+          <td  *ngIf="auth.isAdmin()">
+              <button
+              type="button"
+              class="btn btn-large btn-outline-danger"
+              (click)="deletemovie(movie.id)"
+            >
+              Eliminar
+            </button>
+          </td>
+          <td  *ngIf="!auth.isAdmin() && !movie.reserva">
+              <button
+              type="button"
+              class="btn btn-large btn-outline-success"
+              (click)="reservarmovie(movie.id)"
+            >
+              Reservar
+            </button>
+          </td>
+          <td  *ngIf="!auth.isAdmin() && movie.reserva">
+              Ya reservaste
+          </td>
+        </tr>
+  
+      </tbody>
+    </table>
+  </div>
+</div>

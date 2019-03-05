@@ -1,0 +1,33 @@
+<div class="mt-5">
+  <form [formGroup]="forma" (ngSubmit)="login()">
+    <div class="form-group row">
+      <label class="col-2 col-form-label">Correo</label>
+      <div class="col-md-8">
+
+        <input class="form-control" type="email" placeholder="Correo electrónico" formControlName="correo">
+        <div *ngIf="forma.get('correo').errors?.required && forma.get('correo').dirty" class="form-control-feedback">
+          El correo es necesario.
+        </div>
+        <div *ngIf="forma.get('correo').errors?.pattern  && forma.get('correo').dirty" class="form-control-feedback">
+          Correo invalido
+        </div>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-2 col-form-label">Password</label>
+      <div class="col-md-8">
+
+        <input class="form-control" type="password" placeholder="Password" formControlName="password1">
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <label class="col-2 col-form-label">&nbsp;</label>
+      <div class="input-group col-md-8">
+        <button type="submit" class="btn btn-outline-primary" [disabled]="!forma.valid">
+          Guardar
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
